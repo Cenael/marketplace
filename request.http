@@ -1,0 +1,32 @@
+### API REGISTER
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{ 
+"email": "kjkdccl",
+"password": "ksjksld"
+}
+
+### USERLIST
+
+GET http://localhost:3000/api/ads
+Content-Type: application/json
+
+
+### LOGOUT
+
+POST http://localhost:3000/api/auth/logout
+Content-Type: application/json
+Authorization:  0.08952919626484968
+
+### LOGIN 
+
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{ 
+"username": "kjkdccl",
+"password": "ksjksld",
+"deviceName": "3"
+    
+}
