@@ -3,21 +3,10 @@ POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 { 
-"email": "kjkdccl",
-"password": "ksjksld"
+"email": "rachaelcensuales@gmail.com",
+"password": "1234"
 }
 
-### USERLIST
-
-GET http://localhost:3000/api/ads
-Content-Type: application/json
-
-
-### LOGOUT
-
-POST http://localhost:3000/api/auth/logout
-Content-Type: application/json
-Authorization:  0.08952919626484968
 
 ### LOGIN 
 
@@ -25,8 +14,81 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 { 
-"username": "kjkdccl",
-"password": "ksjksld",
-"deviceName": "3"
+"username": "rachaelcensuales@gmail.com",
+"password": "1234",
+"deviceName": "deviceName"
     
+}
+
+### LOGOUT
+GET http://localhost:3000/api/auth/logout
+Content-Type: application/json
+Authorization: 0.7746344392981837
+
+
+### USERLIST
+GET http://localhost:3000/api/users
+Content-Type: application/json
+
+
+### CREATE AD
+
+POST http://localhost:3000/api/ads
+Content-Type: application/json
+Authorization: 0.1580580827003295
+
+{ 
+"title": "title",
+"description": "description",
+"category": "category",
+"status": "status",
+"price": 10,
+"urlPhoto": "urlPhoto",
+"address": "address",
+"phone": 3331239456
+}
+
+
+### ADLIST
+
+GET http://localhost:3000/api/ads
+Content-Type: application/json
+
+
+### UPDATE AD
+
+PUT http://localhost:3000/api/ads/0.8289822723846443
+Content-Type: application/json
+Authorization: 0.1580580827003295
+
+{
+
+"title": "titolo",
+"description": "description",
+"category": "category",
+"status": "status",
+"price": 10,
+"urlPhoto": "urlPhoto",
+"address": "address",
+"referenceKeyUser": 0.877869258874288,
+"phone": 3331239456
+}
+
+
+###READ DEVICE 
+
+
+# GET http://localhost:3000/api/devices
+# Content-Type: application/json
+# Authorization: 0.5462281196176055
+
+### CREATE REPORT
+POST http://localhost:3000/api/reports
+Content-Type: application/json
+
+{
+"token": 0.5462281196176055,
+"referenceKeyAd": 0.7770797288249514,
+"description": "description",
+"status": "status"
 }
