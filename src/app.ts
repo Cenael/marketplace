@@ -1,4 +1,3 @@
-
 import { ModelAd } from "./models/Ad";
 import { ModelReview } from "./models/Review";
 import { ModelUser } from "./models/User";
@@ -23,11 +22,11 @@ export class Marketplace {
       else return false;
     });
     if (!!userFound) {
-      return false
+      return false;
     } else {
       const newUser = new ModelUser(email, email, password);
       this.users = [...this.users, newUser];
-      return true
+      return true;
     }
   }
   readDevice(deviceName: ModelDevice["deviceName"], token: ModelAuth["token"]) {
@@ -40,18 +39,21 @@ export class Marketplace {
       if (device.referenceKeyUser === auth.referenceKeyUser) return true;
       else return false;
     });
-    if (deviceFiltered.length >= 2)
+    if (deviceFiltered.length >= 2) {
       console.log("You have reached the maximum device's number");
-    else {
+      return false;
+    } else {
       const deviceFound = this.devices.find(function (device) {
         if (device.deviceName === deviceName) return true;
         else return false;
       });
       if (!!deviceFound) {
-        return console.log("device already registered");
+        console.log("device already registered");
+        return false;
       } else {
         const newDevice = new ModelDevice(deviceName, auth.referenceKeyUser);
         this.devices = [...this.devices, newDevice];
+        return true;
       }
     }
   }
@@ -60,28 +62,28 @@ export class Marketplace {
       if (user.username === username && user.password === password) return true;
       else return false;
     });
-    if (!authFound) return console.log("User not found")
+    if (!authFound) return console.log("User not found");
     else {
-    const token = new ModelAuth(authFound.primaryKeyUser);
-    this.auth = [...this.auth, token];
-    const tokenValue = token.token;
-    this.readDevice(deviceName, tokenValue);
-  return tokenValue
-
-  } }
-
+      const token = new ModelAuth(authFound.primaryKeyUser);
+      this.auth = [...this.auth, token];
+      const tokenValue = token.token;
+      this.readDevice(deviceName, tokenValue);
+      return tokenValue;
+    }
+  }
 
   logout(token: ModelAuth["token"]) {
     const auth = this.getUserByToken(token);
-    if (!auth) {console.log("User not logged in")
+    if (!auth) {
+      console.log("User not logged in");
     } else {
       this.auth = this.auth.filter(function (auth) {
         if (auth.token !== token) return true;
         else return false;
       });
-      console.log("Succesfully logged out")
-   return true }
-   
+      console.log("Succesfully logged out");
+      return true;
+    }
   }
 
   getUserByToken(token: ModelAuth["token"]) {
@@ -93,14 +95,15 @@ export class Marketplace {
     else return authFound;
   }
 
-  readToken(token: ModelAuth["token"]) {  const authFound = this.auth.find(function (auth) {
-    if (auth.token === token) return true;
-    else return false;
-  });
-  if (!authFound) return null;
-  else return authFound.token;
-}
-  
+  readToken(token: ModelAuth["token"]) {
+    const authFound = this.auth.find(function (auth) {
+      if (auth.token === token) return true;
+      else return false;
+    });
+    if (!authFound) return null;
+    else return authFound.token;
+  }
+
   createAd(
     token: ModelAuth["token"],
     title: ModelAd["title"],
@@ -115,8 +118,9 @@ export class Marketplace {
     const auth = this.getUserByToken(token);
     if (!auth) {
       console.log("Invalid Token");
-      return;
+      return false;
     }
+
     const newAd = new ModelAd(
       title,
       description,
@@ -130,21 +134,27 @@ export class Marketplace {
     );
     this.ads = [...this.ads, newAd];
     console.log("Ad successfully created!");
+    if (newAd) return newAd;
+    else return false;
   }
 
-  readAdDetail(referenceKeyAd: ModelAd["primaryKeyAd"]){
-    const adFound = this.ads.find((ad)=> { 
-      return ad.primaryKeyAd === referenceKeyAd 
-    })
+  readAdDetail(referenceKeyAd: ModelAd["primaryKeyAd"]) {
+    const adFound = this.ads.find((ad) => {
+      return ad.primaryKeyAd === referenceKeyAd;
+    });
     if (!adFound) {
       console.log("Ad not found");
       return null;
     }
-return adFound
+    return adFound;
   }
 
-  readAdList(){ 
+  readAdList() {
     return this.ads;
+  }
+
+  readUserList() {
+    return this.users;
   }
   createReport(
     token: ModelAuth["token"],
@@ -173,6 +183,7 @@ return adFound
     );
     this.reports = [...this.reports, newReport];
     console.log("Report successfully created!");
+    return newReport;
   }
 
   updateAd(
@@ -185,42 +196,48 @@ return adFound
     price: number,
     urlPhoto: string,
     address: string,
-    referenceKeyUser: ModelUser["primaryKeyUser"],
+
     phone: number
   ) {
+    let updatedAd = undefined;
     const auth = this.getUserByToken(token);
     if (!auth) {
       console.log("Invalid Token");
-      return;
-    }
-    const adFound = this.ads.find(function (ad) {
-      if (ad.primaryKeyAd === referenceKeyAd) return true;
-      else return false;
-    });
-    if (!adFound) {
-      console.log("Unfound Ad");
-      return;
-    }
-    const updatedAd = this.ads.map((ad) => {
-      if (ad.referenceKeyUser === auth.referenceKeyUser)
-        return {
-          ...ad,
-          title: title,
-          description: description,
-          category: category,
-          status: status,
-          price: price,
-          urlPhoto: urlPhoto,
-          address: address,
-          referenceKeyUser: referenceKeyUser,
-          phone: phone,
-        };
+      return false;
+    } else {
+      console.log(referenceKeyAd);
+      const adFound = this.ads.find(function (ad) {
+        if (ad.primaryKeyAd === referenceKeyAd) return true;
+        else return false;
+      });
+      console.log(adFound);
+      if (!adFound) {
+        console.log("Unfound Ad");
+        return false;
+      } else {
+        updatedAd = this.ads.map((ad) => {
+          if (ad.referenceKeyUser === auth.referenceKeyUser)
+            return {
+              ...ad,
+              title: title,
+              description: description,
+              category: category,
+              status: status,
+              price: price,
+              urlPhoto: urlPhoto,
+              address: address,
+              phone: phone,
+            };
+          else return ad;
+        });
 
-      return { ...ad };
-    });
-    this.ads = updatedAd;
+        this.ads = updatedAd;
+      }
+      if (!updatedAd) return false;
+      else console.log("Succesfully updated Ad");
+      return updatedAd;
+    }
   }
-
   //dato l'id del Ad creato dall'utente, solo lo stesso che lo ha creato può accedervi (attraverso il token), verificare se è presente all'interno dell'array ads e modificarlo
 
   deleteAd(referenceKeyAd: ModelAd["primaryKeyAd"], token: ModelAuth["token"]) {
