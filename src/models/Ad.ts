@@ -10,7 +10,7 @@ export class ModelAd {
   address: string;
   referenceKeyUser: ModelUser["primaryKeyUser"];
   phone: number;
-  primaryKeyAd: number;
+  primaryKeyAd: string;
   createdAt: Date;
   referenceKeyUserPurchased: number;
   lead: Array<any>;
@@ -25,7 +25,7 @@ export class ModelAd {
     referenceKeyUser: ModelUser["primaryKeyUser"],
     phone: number
   ) {
-    this.primaryKeyAd = Math.random();
+    this.primaryKeyAd =  Math.random().toString(16).slice(2);;
     this.referenceKeyUser = referenceKeyUser;
     this.createdAt = new Date();
     this.title = title;

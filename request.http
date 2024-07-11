@@ -23,7 +23,7 @@ Content-Type: application/json
 ### LOGOUT
 GET http://localhost:3000/api/auth/logout
 Content-Type: application/json
-Authorization: 0.7746344392981837
+Authorization: 0.7350087161914725
 
 
 ### USERLIST
@@ -35,7 +35,7 @@ Content-Type: application/json
 
 POST http://localhost:3000/api/ads
 Content-Type: application/json
-Authorization: 0.1580580827003295
+Authorization:  8bd3c632aefd6
 
 { 
 "title": "title",
@@ -92,3 +92,102 @@ Content-Type: application/json
 "description": "description",
 "status": "status"
 }
+
+###DELETE AD 
+
+DELETE http://localhost:3000/api/ads/0.42960124914251985
+Content-Type: application/json 
+Authorization: 0.4683058969076379
+
+
+### READ PHONE NUMBER
+
+GET http://localhost:3000/api/ads/0.3683984198356258
+Content-Type: application/json
+Authorization: 0.06457044822370683
+
+# ### LEADSLIST
+
+# GET http://localhost:3000/api/leads/0.3683984198356258
+# Content-Type: application/json
+# Authorization: 0.06457044822370683
+
+
+### CREATE REVIEW
+POST http://localhost:3000/api/63e7d341179eb/reviews
+Content-Type: application/json
+Authorization: 8bd3c632aefd6
+
+{ 
+"title": "title",
+"description": "description",
+"rating": "rating"
+}
+
+### DELETE REVIEW 
+
+DELETE  http://localhost:3000/api/reviews/0.42960124914251985
+Content-Type: application/json
+Authorization: 
+
+### DELETE ACCOUNT 
+
+DELETE  http://localhost:3000/api/users/0.42960124914251985
+Content-Type: application/json
+Authorization: 
+
+### UPDATE USERNAME 
+
+PATCH http://localhost:3000/api/users/:primaryKeyUser
+Content-Type: application/json
+Authorization: 
+
+{
+    "username": "newusername"
+}
+
+###UPDATE AS SOLD 
+
+PATCH http://localhost:3000/api/ads/:primaryKeyAd
+Content-Type: application/json
+Authorization: 
+
+{ 
+    "referenceKeyUserPurchased" : "djjdkd"
+}
+
+### FILTER AD 
+
+POST http://localhost:3000/api/ads/
+Content-Type: application/json
+Authorization: 
+
+{ 
+    "price": 12,
+    "category": "bitch",
+    "status": "buono stato"
+}
+
+### CREATE FAVOURITE
+POST http://localhost:3000/api/ads/:primaryKeyAd
+Content-Type: application/json
+Authorization: 
+
+
+### DELETE FAVOURITE
+DELETE http://localhost:3000/api/ads/:primaryKeyAd
+Content-Type: application/json
+Authorization: 
+
+### GET FAVOURITE 
+
+GET http://localhost:3000/api/favourites 
+Content-Type: application/json
+Authorization: 
+
+
+### GET FILTERED AD BY TEXT
+
+GET  http://localhost:3000/api/ads/:primaryKeyAd
+Content-Type: application/json
+Authorization: 
