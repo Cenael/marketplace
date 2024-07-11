@@ -2,7 +2,7 @@ import { ModelAd } from "./Ad";
 import { ModelUser } from "./User";
 
 export class ModelReview {
-  primaryKeyReview: number;
+  primaryKeyReview: string;
   referenceKeyUser: ModelUser["primaryKeyUser"];
   title: string;
   description: string;
@@ -16,7 +16,7 @@ export class ModelReview {
     rating: number,
     referenceKeyAd: ModelAd["primaryKeyAd"]
   ) {
-    this.primaryKeyReview = Math.random();
+    this.primaryKeyReview =  Math.random().toString(16).slice(2);;
     this.referenceKeyUser = referenceKeyUser;
     this.title = title;
     this.description = description;
