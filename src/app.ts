@@ -261,7 +261,7 @@ export class Marketplace {
       else return false;
     });
     console.log("Succesfully removed Ad");
-    return true
+    return true;
   }
 
   readPhoneNumber(
@@ -281,11 +281,9 @@ export class Marketplace {
     if (!adFound) {
       console.log("Unfound Ad");
       return;
-    }    
-    console.log(adFound.phone);
-    
+    }
     adFound.lead = [...adFound.lead, auth];
-    return true;
+    return adFound.phone;
   }
 
   readLeadList(
@@ -305,7 +303,7 @@ export class Marketplace {
       console.log("Unfound Ad");
       return false;
     }
-    console.log( adFound.lead);
+    console.log(adFound.lead);
     return adFound.lead;
   }
 
@@ -332,7 +330,6 @@ export class Marketplace {
     this.reviews = [...this.reviews, newReview];
     console.log("Review succesfully created!");
     return newReview;
-    
   }
 
   deleteReview(
@@ -353,7 +350,8 @@ export class Marketplace {
         return reviewFound.primaryKeyReview !== review.primaryKeyReview;
       });
       console.log("Succesfully Review Removed");
-    return true;}
+      return true;
+    }
   }
 
   deleteAccount(
@@ -375,7 +373,7 @@ export class Marketplace {
         } else return false;
       });
     console.log("Account succesfully deleted");
-    return true
+    return true;
   }
 
   updateUsername(newUsername: string, token: ModelAuth["token"]) {
@@ -386,13 +384,10 @@ export class Marketplace {
     }
     this.users = this.users.map((user) => {
       if (user.primaryKeyUser === auth.referenceKeyUser) {
-        return { ...user, username: newUsername } ;
-      }
-       else return { ...user };
-      
+        return { ...user, username: newUsername };
+      } else return { ...user };
     });
     return true;
-
   }
 
   updateAdAsSold(
@@ -431,7 +426,6 @@ export class Marketplace {
   }
 
   readFilteredAd(
-    referenceKeyAd: ModelAd["primaryKeyAd"],
     token: ModelAuth["token"],
     price: number,
     category: string,
@@ -441,24 +435,16 @@ export class Marketplace {
     if (!authFound) {
       console.log("Invalid Token");
     } else {
-      const adFound = this.ads.find(function (ad) {
-        if (ad.primaryKeyAd === referenceKeyAd) return true;
+      const filteredAds = this.ads.filter(function (ad) {
+        if (
+          ad.price === price ||
+          ad.category === category ||
+          ad.status === status
+        )
+          return true;
         else return false;
       });
-      if (!adFound) console.log("Ad not found");
-      else {
-        const filteredAds = this.ads.filter(function (ad) {
-          if (
-            ad.price === price ||
-            ad.category === category ||
-            ad.status === status
-          )
-            return true;
-          else return false;
-        });
-        return filteredAds;
-      }
-    
+      return filteredAds;
     }
   }
   //alcuni cambi saranno delle stringhe ben precise
@@ -508,7 +494,7 @@ export class Marketplace {
         );
         this.favourites = [...this.favourites, newFavourite];
       }
-      return true
+      return true;
       //verificare se il token corrisponde all'utente
     }
   }
@@ -547,7 +533,7 @@ export class Marketplace {
       });
       console.log("Succesfully removed Ad");
     }
-    return true
+    return true;
   }
 }
 

@@ -5,8 +5,8 @@ const marketplace = new Marketplace(); //istanziare la classe
 
 const app = express(); //crea un'app express
 const server = express.json(); //per istanziarlo formattare i dati che vengono passati dal client al server
-// const port = process.env.PORT || 3000;
-// const baseUrl = process.env.BASE_URL || "http://localhost:";
+const port = process.env.PORT || 3000;
+const baseUrl = process.env.BASE_URL || "http://localhost:";
 app.use(server);
 
 // const routerApi = express.Router();
@@ -48,7 +48,7 @@ app.get("/api/auth/logout", function (req: Request, res: Response) {
 
 app.post("/api/ads", function (req: Request, res: Response) {
   const ad = req.body;
-  const token = req.headers.authorization
+  const token = req.headers.authorization;
   console.log(ad);
   const created = marketplace.createAd(
     String(token),
@@ -65,21 +65,23 @@ app.post("/api/ads", function (req: Request, res: Response) {
   else return res.status(400).json({ message: "Ad not created" });
 });
 
-
-app.post("/api/:primaryKeyAd/reviews", function (req: Request, res: Response) {
-    const review = req.body;    
-    const token =  req.headers.authorization
+app.post(
+  "/api/ads/:primaryKeyAd/reviews",
+  function (req: Request, res: Response) {
+    const review = req.body;
+    const token = req.headers.authorization;
     const created = marketplace.createReview(
-     review.referenceKeyUser,
-     String (token),
-    req.params.primaryKeyAd,      
+      review.referenceKeyUser,
+      String(token),
+      req.params.primaryKeyAd,
       review.title,
       review.description,
       review.rating
     );
     if (created) return res.status(200).json(created);
     else return res.status(400).json({ message: "Review not created" });
-  });
+  }
+);
 
 // app.get("/devices/:primaryKeyDevice"),
 //   function (req: Request, res: Response) {
@@ -90,17 +92,20 @@ app.post("/api/:primaryKeyAd/reviews", function (req: Request, res: Response) {
 //     else return res.status(400).json({ message: "Device not found" });
 //   };
 
-app.post("/api/reports", function (req: Request, res: Response) {
-  const report = req.body;
-  const created = marketplace.createReport(
-    report.token,
-    report.referenceKeyAd,
-    report.description,
-    report.status
-  );
-  if (created) return res.status(200).json(created);
-  else return res.status(400).json({ message: "Report not created" });
-});
+app.post(
+  "/api/ads/:primaryKeyAd/reports",
+  function (req: Request, res: Response) {
+    const report = req.body;
+    const created = marketplace.createReport(
+      String(req.headers.authorization),
+      String(req.params.primaryKeyAd),
+      report.description,
+      report.status
+    );
+    if (created) return res.status(200).json(created);
+    else return res.status(400).json({ message: "Report not created" });
+  }
+);
 
 app.get("/api/users", function (req: Request, res: Response) {
   const userList = marketplace.readUserList();
@@ -125,123 +130,128 @@ app.put("/api/ads/:primaryKeyAd", function (req: Request, res: Response) {
   else return res.status(400).json({ message: "Ad not updated" });
 });
 
-app.delete("/api/ads/:primaryKeyAd", function (req: Request, res: Response){     
-    const deleted = marketplace.deleteAd( 
-       String(req.params.primaryKeyAd), 
-        String(req.headers.authorization))
-        console.log(req.params.primaryKeyAd)
-if (deleted) return res.status(200).json({message: "Succesfully deleted"})
-else return res.status(400).json({message: "impossible to delete"})
-})
-
-app.get("/api/ads/:primaryKeyAd", function (req: Request, res: Response){ 
-    const read = marketplace.readPhoneNumber(
-        String(req.headers.authorization),
-        String(req.params.primaryKeyAd)
-   )
-    if (read) return res.status(200).json({read})
-        else return res.status(400).json({message: "No phone number"})
-        
-})
-app.delete("/api/ads/:primaryKeyReview", function (req: Request, res: Response){     
-    const deleted = marketplace.deleteReview( 
-       String(req.params.primaryKeyReview), 
-        String(req.headers.authorization))
-if (deleted) return res.status(200).json({message: "Succesfully deleted"})
-else return res.status(400).json({message: "impossible to delete"})
-})
-
-
-app.delete("/api/users/:primaryKeyUser", function (req: Request, res: Response){     
-    const deleted = marketplace.deleteAccount( 
-       String(req.params.primaryKeyUser), 
-        String(req.headers.authorization))
-if (deleted) return res.status(200).json({message: "Succesfully deleted"})
-else return res.status(400).json({message: "impossible to delete"})
-})
-
-app.patch ("/api/users/:primaryKeyUser", function (req: Request, res: Response){ 
-const username = req.body 
-const newUsername = marketplace.updateUsername(
-    username.newUsername, 
+app.delete("/api/ads/:primaryKeyAd", function (req: Request, res: Response) {
+  const deleted = marketplace.deleteAd(
+    String(req.params.primaryKeyAd),
     String(req.headers.authorization)
-)
-if (newUsername) return res.status(200).json({message: "Succesfully changed username"})
-    else return res.status(400).json({message: "Change username failed"})
-})
+  );
+  if (deleted) return res.status(200).json({ message: "Succesfully deleted" });
+  else return res.status(400).json({ message: "impossible to delete" });
+});
 
-app.patch("api/ads/:primaryKeyAd", function (req: Request, res: Response){ 
-const sold = req.body
-    const updated = marketplace.updateAdAsSold(
-    
+app.get("/api/ads/:primaryKeyAd", function (req: Request, res: Response) {
+  const read = marketplace.readPhoneNumber(
     String(req.headers.authorization),
-    String(req.params.primaryKeyUser),
-    sold.referenceKeyUserPurchased
-)
-if (updated) return res.status(200).json({message: "Ad Sold"})
-    else return res.status(400).json({message: "Failed"})
+    String(req.params.primaryKeyAd)
+  );
+  if (read) return res.status(200).json({ read });
+  else return res.status(400).json({ message: "No phone number" });
+});
 
-})
-
-app.post("/api/ads", function (req: Request, res: Response){
-    const list = req.body
-    const filteredList = marketplace.readFilteredAd(
-        String(req.params.primaryKeyAd),
-        String(req.headers.authorization),
-        list.price,
-        list.category,
-        list.status
-    );
-    if (!!filteredList) return res.status(200).json(filteredList)
-        else return res.status(400).json({message: "Ad not filtered"})
-
-} 
-)
-app.post("/api/ads/:primaryKeyAd", function (req: Request, res: Response) {
-    
-    const created = marketplace.createFavouriteAdList(
-      String(req.params.primaryKeyAd),
+app.delete(
+  "/api/ads/reviews/:primaryKeyReview",
+  function (req: Request, res: Response) {
+    const deleted = marketplace.deleteReview(
+      String(req.params.primaryKeyReview),
       String(req.headers.authorization)
     );
-    if (created) return res.status(200).json(created);
-    else return res.status(400).json({ message: "Report not created" });
-  });
+    if (deleted)
+      return res.status(200).json({ message: "Succesfully deleted" });
+    else return res.status(400).json({ message: "impossible to delete" });
+  }
+);
 
-  app.delete("/api/ads/:primaryKeyAd", function (req: Request, res: Response) {
-    const deleted = marketplace.deleteFavouriteAd( 
-        String(req.params.primaryKeyAd), 
-         String(req.headers.authorization))
-         console.log(req.params.primaryKeyAd)
- if (deleted) return res.status(200).json({message: "Succesfully deleted"})
- else return res.status(400).json({message: "impossible to delete"})
- })
-  
- app.get("/api/favourites", function (req: Request, res: Response) {
-  const favouriteList =  marketplace.readFavouriteAdList(    
-         String(req.headers.authorization)) 
-return res.json(favouriteList)
-        });
+app.delete(
+  "/api/users/:primaryKeyUser",
+  function (req: Request, res: Response) {
+    const deleted = marketplace.deleteAccount(
+      String(req.params.primaryKeyUser),
+      String(req.headers.authorization)
+    );
+    if (deleted)
+      return res.status(200).json({ message: "Succesfully deleted" });
+    else return res.status(400).json({ message: "impossible to delete" });
+  }
+);
 
- 
-app.get("/api/ads/:primaryKeyAd)", function (req: Request, res: Response) { 
-    
-const filteredAd = marketplace.readAdListByText("text");
-if (filteredAd)return res.status(200).json({message: "Succesfully filtered"})
-    else return res.status(400).json({message: "failed to filter"})
-})
+app.patch("/api/users/:primaryKeyUser", function (req: Request, res: Response) {
+  const username = req.body;
+  const newUsername = marketplace.updateUsername(
+    username.newUsername,
+    String(req.headers.authorization)
+  );
+  if (newUsername)
+    return res.status(200).json({ message: "Succesfully changed username" });
+  else return res.status(400).json({ message: "Change username failed" });
+});
 
-// app.get("/api/leads/:primaryKeyAd"), function (req: Request, res: Response){
-//     const leadsList = marketplace.readLeadList(  
+app.patch("/api/ads/:primaryKeyAd", function (req: Request, res: Response) {
+  const sold = req.body;
+  const updated = marketplace.updateAdAsSold(
+    String(req.headers.authorization),
+    String(req.params.primaryKeyAd),
+    sold.referenceKeyUserPurchased
+  );
+  if (updated) return res.status(200).json({ message: "Ad Sold" });
+  else return res.status(400).json({ message: "Failed" });
+});
+
+app.get("/api/ad/search", function (req: Request, res: Response) {
+  const { price, category, status } = req.query;
+  const filteredList = marketplace.readFilteredAd(
+    String(req.headers.authorization),
+    Number(price),
+    String(category),
+    String(status)
+  );
+
+  if (filteredList) return res.status(200).json(filteredList);
+  else return res.status(400).json({ message: "Ad not filtered" });
+});
+
+app.post("/api/ads/:primaryKeyAd", function (req: Request, res: Response) {
+  const created = marketplace.createFavouriteAdList(
+    String(req.params.primaryKeyAd),
+    String(req.headers.authorization)
+  );
+  if (created) return res.status(200).json(created);
+  else return res.status(400).json({ message: "Report not created" });
+});
+
+app.delete("/api/ads/:primaryKeyAd", function (req: Request, res: Response) {
+  const deleted = marketplace.deleteFavouriteAd(
+    String(req.params.primaryKeyAd),
+    String(req.headers.authorization)
+  );
+  console.log(req.params.primaryKeyAd);
+  if (deleted) return res.status(200).json({ message: "Succesfully deleted" });
+  else return res.status(400).json({ message: "impossible to delete" });
+});
+
+app.get("/api/favourites", function (req: Request, res: Response) {
+  const favouriteList = marketplace.readFavouriteAdList(
+    String(req.headers.authorization)
+  );
+  return res.json(favouriteList);
+});
+
+app.get("/api/ads/:primaryKeyAd", function (req: Request, res: Response) {
+  const filteredAd = marketplace.readAdListByText("text");
+  if (filteredAd)
+    return res.status(200).json({ message: "Succesfully filtered" });
+  else return res.status(400).json({ message: "failed to filter" });
+});
+
+// app.get("/api/leads/:primaryKeyAd", function (req: Request, res: Response){
+//     const leadsList = marketplace.readLeadList(
 //          String(req.headers.authorization),
 //     String(req.params.primaryKeyAd));
-//     console.log(req.params.primaryKeyAd)   
+//     console.log(req.params.primaryKeyAd)
 //     return res.json(leadsList)
 // }
 
-app.listen(3000, () => {
-  console.log("server is running.. http://localhost:3000");
-  //app.get("/", function (req: Request, res: Response) {
-  // console.log("Server is running on ${baseUrl}:${port}") }
+app.listen(port, () => {
+  console.log(`Server is running on ${baseUrl}${port}`);
 });
 
 // const apis = {

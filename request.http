@@ -23,8 +23,7 @@ Content-Type: application/json
 ### LOGOUT
 GET http://localhost:3000/api/auth/logout
 Content-Type: application/json
-Authorization: 0.7350087161914725
-
+Authorization: 76c7410236b92 a8e88fd1230d9
 
 ### USERLIST
 GET http://localhost:3000/api/users
@@ -35,7 +34,7 @@ Content-Type: application/json
 
 POST http://localhost:3000/api/ads
 Content-Type: application/json
-Authorization:  8bd3c632aefd6
+Authorization: 6dcda1fdbf123
 
 { 
 "title": "title",
@@ -57,13 +56,13 @@ Content-Type: application/json
 
 ### UPDATE AD
 
-PUT http://localhost:3000/api/ads/0.8289822723846443
+PUT http://localhost:3000/api/ads/f34b07208fdb6
 Content-Type: application/json
-Authorization: 0.1580580827003295
+Authorization: 38749b87f8cbe
 
 {
 
-"title": "titolo",
+"title": "titsolo",
 "description": "description",
 "category": "category",
 "status": "status",
@@ -75,48 +74,35 @@ Authorization: 0.1580580827003295
 }
 
 
-###READ DEVICE 
-
-
-# GET http://localhost:3000/api/devices
-# Content-Type: application/json
-# Authorization: 0.5462281196176055
-
 ### CREATE REPORT
-POST http://localhost:3000/api/reports
+POST http://localhost:3000/api/ads/f34b07208fdb6/reports
 Content-Type: application/json
+Authorization: 76c7410236b92
 
 {
-"token": 0.5462281196176055,
-"referenceKeyAd": 0.7770797288249514,
+
 "description": "description",
 "status": "status"
 }
 
-###DELETE AD 
+### DELETE AD 
 
-DELETE http://localhost:3000/api/ads/0.42960124914251985
+DELETE http://localhost:3000/api/ads/e2d533f497fd5
 Content-Type: application/json 
-Authorization: 0.4683058969076379
-
+Authorization: 76c7410236b92 
 
 ### READ PHONE NUMBER
 
-GET http://localhost:3000/api/ads/0.3683984198356258
+GET http://localhost:3000/api/ads/f34b07208fdb6
 Content-Type: application/json
-Authorization: 0.06457044822370683
+Authorization: 76c7410236b92 
 
-# ### LEADSLIST
-
-# GET http://localhost:3000/api/leads/0.3683984198356258
-# Content-Type: application/json
-# Authorization: 0.06457044822370683
 
 
 ### CREATE REVIEW
-POST http://localhost:3000/api/63e7d341179eb/reviews
+POST http://localhost:3000/api/ads/f34b07208fdb6/reviews
 Content-Type: application/json
-Authorization: 8bd3c632aefd6
+Authorization: 76c7410236b92 
 
 { 
 "title": "title",
@@ -126,68 +112,57 @@ Authorization: 8bd3c632aefd6
 
 ### DELETE REVIEW 
 
-DELETE  http://localhost:3000/api/reviews/0.42960124914251985
+DELETE  http://localhost:3000/api/ads/reviews/bac4a85ecb29e
 Content-Type: application/json
-Authorization: 
+Authorization: 76c7410236b92 
 
 ### DELETE ACCOUNT 
 
-DELETE  http://localhost:3000/api/users/0.42960124914251985
+DELETE  http://localhost:3000/api/users/0e70a7aba91d7
 Content-Type: application/json
-Authorization: 
+Authorization: 76c7410236b92  
 
 ### UPDATE USERNAME 
 
-PATCH http://localhost:3000/api/users/:primaryKeyUser
+PATCH http://localhost:3000/api/users/f34b07208fdb6
 Content-Type: application/json
-Authorization: 
+Authorization: 76c7410236b92  
 
 {
-    "username": "newusername"
+    "username": "ppallina"
 }
 
-###UPDATE AS SOLD 
+### UPDATE AS SOLD 
 
-PATCH http://localhost:3000/api/ads/:primaryKeyAd
+PATCH http://localhost:3000/api/ads/f34b07208fdb6
 Content-Type: application/json
-Authorization: 
+Authorization: 76c7410236b92 
+
 
 { 
     "referenceKeyUserPurchased" : "djjdkd"
 }
 
-### FILTER AD 
-
-POST http://localhost:3000/api/ads/
-Content-Type: application/json
-Authorization: 
-
-{ 
-    "price": 12,
-    "category": "bitch",
-    "status": "buono stato"
-}
-
 ### CREATE FAVOURITE
-POST http://localhost:3000/api/ads/:primaryKeyAd
+POST http://localhost:3000/api/ads/d4ff2211a32a6
 Content-Type: application/json
-Authorization: 
+Authorization: 76c7410236b92 
+
 
 
 ### DELETE FAVOURITE
-DELETE http://localhost:3000/api/ads/:primaryKeyAd
+DELETE http://localhost:3000/api/ads/d4ff2211a32a6
 Content-Type: application/json
-Authorization: 
+Authorization: 76c7410236b92  
 
 ### GET FAVOURITE 
 
 GET http://localhost:3000/api/favourites 
 Content-Type: application/json
-Authorization: 
+Authorization: 76c7410236b92  
 
+### GET FILTERED AD
 
-### GET FILTERED AD BY TEXT
-
-GET  http://localhost:3000/api/ads/:primaryKeyAd
+GET http://localhost:3000/api/ads/search
 Content-Type: application/json
-Authorization: 
+Authorization: 76c7410236b92
